@@ -6,7 +6,9 @@ docker rm postfix_postfix_1
 docker rmi postfix_postfix
 
 ## remove permanent files
-sudo rm -fvr /data/postfix
+if [ -d /data/postfix ]; then
+	sudo rm -fvr /data/postfix
+fi
 
 ## copy permanent files
 if [ ! -d /data/postfix ]; then

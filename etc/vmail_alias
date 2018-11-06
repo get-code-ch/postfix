@@ -302,7 +302,11 @@
 #        New York, NY 10011, USA
 # 
 #                                                                     VIRTUAL(5)
-@omega3.me 			root@localhost
-root@omega3.me      root@localhost
-cld@omega3.me 		cld@localhost
-
+@localhost 			    catchall@localhost
+catchall@localhost      catchall@localhost
+root                    root@localhost
+postmaster              postmaster@localhost
+abuse                   abuse@localhost
+root@localhost          root@localhost
+postmaster@localhost    root@localhost
+abuse@localhost         root@localhost

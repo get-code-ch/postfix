@@ -5,13 +5,7 @@ services:
     build: .
     restart: always
     volumes:
-      - /data/postfix/etc:/etc/postfix
-      - /data/postfix/ssl/ca.crt:/etc/ssl/certs/ca.crt
-      - /data/postfix/ssl/server.crt:/etc/ssl/certs/server.crt
-      - /data/postfix/ssl/server.key:/etc/ssl/certs/server.key
-      - /data/postfix/log/mail.log:/var/log/maillog
-      - /data/postfix/dovecot:/etc/dovecot
-      - /data/mail:/root/Maildir
+      - /data/postfix/mail:/var/mail
     ports:
       - target: 25
         published: 25
@@ -21,11 +15,9 @@ services:
         published: 587
         protocol: tcp
         mode: host
+      - target: 465
+        published: 465
+        protocol: tcp
+        mode: host
 volumes:
-    etc:
-    dovecot:
-    ca.crt:
-    server.crt:
-    server.key:
-    mail.log:
     mail:

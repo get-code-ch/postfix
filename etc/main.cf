@@ -100,7 +100,7 @@ myhostname = ##MYHOSTNAME##
 # $mydomain is used as a default value for many other configuration
 # parameters.
 #
-mydomain = ##MYDOMAIN##
+mydomain = localdom
 
 # SENDING MAIL
 # 
@@ -179,9 +179,10 @@ inet_interfaces = all
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
 #mydestination = $myhostname, localhost.$mydomain, localhost
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
 #	mail.$mydomain, www.$mydomain, ftp.$mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+mydestination = $myhostname.$mydomain, $myhostname
 
 # REJECTING MAIL FOR UNKNOWN LOCAL USERS
 #
@@ -225,8 +226,15 @@ mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 #local_recipient_maps = unix:passwd.byname $alias_maps
 #local_recipient_maps = proxy:unix:passwd.byname $alias_maps
 #local_recipient_maps =
-virtual_alias_domains = ##VIRTUAL_ALIAS_DOMAINS##
-virtual_alias_maps = hash:/etc/postfix/virtual
+#virtual_alias_domains = ##VIRTUAL_ALIAS_DOMAINS##
+virtual_alias_maps = hash:/etc/postfix/vmail_alias
+virtual_mailbox_domains = hash:/etc/postfix/vmail_domains
+virtual_mailbox_maps = hash:/etc/postfix/vmail_mailbox
+virtual_mailbox_base = /var/mail
+virtual_minimum_uid = 2222
+virtual_transport = virtual
+virtual_uid_maps = static:2222
+virtual_gid_maps = static:2222
 
 # The unknown_local_recipient_reject_code specifies the SMTP server
 # response code when a recipient domain matches $mydestination or
@@ -319,7 +327,7 @@ smtpd_relay_restrictions = permit_mynetworks,
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-#relay_domains = $mydestination
+relay_domains = $mydestination
 
 # INTERNET OR INTRANET
 
@@ -412,6 +420,7 @@ smtpd_relay_restrictions = permit_mynetworks,
 #alias_maps = hash:/etc/aliases
 #alias_maps = hash:/etc/aliases, nis:mail.aliases
 #alias_maps = netinfo:/aliases
+alias_maps = hash:/etc/postfix/aliases
 
 # The alias_database parameter specifies the alias database(s) that
 # are built with "newaliases" or "sendmail -bi".  This is a separate
@@ -422,6 +431,8 @@ smtpd_relay_restrictions = permit_mynetworks,
 #alias_database = dbm:/etc/mail/aliases
 #alias_database = hash:/etc/aliases
 #alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
+alias_database = $alias_maps
+
 
 # ADDRESS EXTENSIONS (e.g., user+foo)
 #
@@ -732,11 +743,11 @@ smtp_tls_CAfile=/etc/ssl/cert.pem
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
-#smtpd_sasl_local_domain = debieux.local
-
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
+smtpd_sasl_local_domain = $mydomain
 broken_sasl_auth_clients = yes
 
-smtpd_sasl_security_options = noanonymous
 
 #smtpd_recipient_restrictions =
 #   permit_mynetworks,

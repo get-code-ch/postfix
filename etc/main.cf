@@ -327,7 +327,7 @@ smtpd_relay_restrictions = permit_mynetworks,
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-relay_domains = $mydestination
+# relay_domains = $mydestination
 
 # INTERNET OR INTRANET
 

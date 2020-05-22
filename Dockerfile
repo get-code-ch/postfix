@@ -9,12 +9,13 @@ COPY ./etc/ /etc/postfix/
 
 RUN sed -i -e "s/##MYHOSTNAME##/$HOSTNAME/g" /etc/postfix/main.cf
 
+RUN mkdir -p /var/log/postfix
+RUN touch /var/log/postfix/mail.log
+
 RUN postmap /etc/postfix/vmail_domains
 RUN postmap /etc/postfix/vmail_mailbox
 RUN postmap /etc/postfix/vmail_alias
 RUN postalias hash:/etc/postfix/aliases
-
-RUN touch /var/log/maillog
 
 # dovecot conf
 COPY ./dovecot/ /etc/dovecot/

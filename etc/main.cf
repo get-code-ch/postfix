@@ -756,4 +756,8 @@ broken_sasl_auth_clients = yes
 
 message_size_limit = 20480000
 
-
+#
+# maillog configuration
+#
+maillog_file = /var/log/postfix/mail.log
+maillog_file_prefixes = /var/log/postfix

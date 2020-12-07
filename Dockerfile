@@ -1,5 +1,5 @@
 FROM alpine:latest
-MAINTAINER Claude Debieux <claude@get-code.ch>
+LABEL maintainer="Claude Debieux <claude@get-code.ch>"
 
 RUN apk add --no-cache --update supervisor rsyslog bash postfix ca-certificates openssl dovecot
 

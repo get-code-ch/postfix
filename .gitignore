@@ -1,2 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
+ssl/*
+ssl/
+opendkim/etc/*.key
+test_mail.txt

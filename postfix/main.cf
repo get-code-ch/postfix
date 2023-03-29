@@ -58,7 +58,7 @@ command_directory = /usr/sbin
 # daemon programs (i.e. programs listed in the master.cf file). This
 # directory must be owned by root.
 #
-daemon_directory = /usr/libexec/postfix
+daemon_directory = /usr/lib/postfix/sbin
 
 # The data_directory parameter specifies the location of Postfix-writable
 # data files (caches, random numbers). This directory must be owned
@@ -93,7 +93,7 @@ mail_owner = postfix
 #
 #myhostname = host.domain.tld
 #myhostname = virtual.domain.tld
-myhostname = ##MYHOSTNAME##
+myhostname = ##MYHOSTNAME## 
 
 # The mydomain parameter specifies the local internet domain name.
 # The default is to use $myhostname minus the first component.
@@ -227,9 +227,9 @@ mydestination = $myhostname.$mydomain, $myhostname
 #local_recipient_maps = proxy:unix:passwd.byname $alias_maps
 #local_recipient_maps =
 #virtual_alias_domains = ##VIRTUAL_ALIAS_DOMAINS##
-virtual_alias_maps = hash:/etc/postfix/vmail_alias
-virtual_mailbox_domains = hash:/etc/postfix/vmail_domains
-virtual_mailbox_maps = hash:/etc/postfix/vmail_mailbox
+virtual_alias_maps = lmdb:/etc/postfix/vmail_alias
+virtual_mailbox_domains = lmdb:/etc/postfix/vmail_domains
+virtual_mailbox_maps = lmdb:/etc/postfix/vmail_mailbox
 virtual_mailbox_base = /var/mail
 virtual_minimum_uid = 2222
 virtual_transport = virtual
@@ -420,7 +420,7 @@ smtpd_relay_restrictions = permit_mynetworks,
 #alias_maps = hash:/etc/aliases
 #alias_maps = hash:/etc/aliases, nis:mail.aliases
 #alias_maps = netinfo:/aliases
-alias_maps = hash:/etc/postfix/aliases
+alias_maps = lmdb:/etc/postfix/aliases
 
 # The alias_database parameter specifies the alias database(s) that
 # are built with "newaliases" or "sendmail -bi".  This is a separate
@@ -564,6 +564,7 @@ mail_spool_directory = /var/spool/mail
 # For details, see "man header_checks".
 #
 #header_checks = regexp:/etc/postfix/header_checks
+always_add_missing_headers = yes
 
 # FAST ETRN SERVICE
 #
@@ -715,9 +716,9 @@ smtpd_tls_mandatory_ciphers=high
 #tls_high_cipherlist=EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA
 
 
-smtpd_tls_CAfile=/etc/ssl/certs/ca.crt
-smtpd_tls_cert_file =  /etc/ssl/certs/server.crt
-smtpd_tls_key_file = /etc/ssl/certs/server.key
+smtpd_tls_CAfile=/etc/postfix/ssl/ca.crt
+smtpd_tls_cert_file =  /etc/postfix/ssl/server.crt
+smtpd_tls_key_file = /etc/postfix/ssl/server.key
 
 smtpd_tls_loglevel = 1
 smtpd_tls_received_header = yes
@@ -734,7 +735,7 @@ smtpd_tls_session_cache_timeout = 3600s
 smtp_tls_protocols=!SSLv2,!SSLv3
 smtp_tls_mandatory_protocols=!SSLv2,!SSLv3
 smtp_tls_security_level = may
-smtp_tls_CAfile=/etc/ssl/cert.pem
+smtp_tls_CAfile=/etc/postfix/ssl/ca.crt
 
 
 #
@@ -755,6 +756,17 @@ broken_sasl_auth_clients = yes
 #   reject_unauth_destination
 
 message_size_limit = 20480000
+
+#
+# Add the DKIM milter
+#
+milter_default_action = accept
+milter_protocol = 2
+smtpd_milters = unix:/run/opendkim/opendkim.sock
+non_smtpd_milters = unix:/run/opendkim/opendkim.sock
+#smtpd_milters = inet:localhost:8891
+#non_smtpd_milters = inet:localhost:8891
+
 
 #
 # maillog configuration

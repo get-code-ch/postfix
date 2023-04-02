@@ -1,7 +1,7 @@
 #! /bin/bash
 ## Script constant environment variable
 SIGING_TABLE="/data/signing_table"
-KEY_TABLE="/data/key_table_wrk"
+KEY_TABLE="/data/key_table"
 KEY_OUTPUT="/data/"
 KEYFILE_PATH="/etc/opendkim"
 

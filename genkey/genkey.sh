@@ -40,9 +40,4 @@ for record in "${DOMAIN_ARRAY[@]}"; do
 
     ## saving record in file
     echo "${selector}._domainkey.${domain} ${domain}:${selector}:${KEYFILE_PATH}/${filename_key}" | tee -a $KEY_TABLE
-
-    ## diplay DNS Record informations
-    echo "------------------- ${selector} -------------------"
-    cat "${KEY_OUTPUT}/${filename_txt}"
-    echo "---------------------------------------------------"
 done

@@ -43,6 +43,13 @@ cp $SSL/ca.crt ./ssl/
 cp $SSL/server.crt ./ssl/
 cp $SSL/server.key ./ssl/
 
+if [ -f "${ROOT}/users" ]; then
+  cp $ROOT/users ./dovecot/
+fi
+
+if [ -f "${ROOT}/network_table" ]; then
+  cp $ROOT/network_table ./postfix/
+fi
 
 ## creating DKIM key
 if [[ "$1" == "genkey" ]]; then
@@ -73,3 +80,12 @@ rm ./ssl/server.key
 rm ./opendkim/etc/signing_table
 rm ./opendkim/etc/key_table
 rm ./opendkim/etc/*.key
+
+## if users file exist in "permanent" parameters folder remove them in building folder
+if [ -f "${ROOT}/users" ]; then
+  rm ./dovecot/users
+fi
+
+if [ -f "${ROOT}/network_table" ]; then
+  rm ./postfix/network_table
+fi

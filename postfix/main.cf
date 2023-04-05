@@ -772,5 +772,5 @@ non_smtpd_milters = unix:/run/opendkim/opendkim.sock
 #
 # maillog configuration
 #
-maillog_file = /var/log/postfix/mail.log
-maillog_file_prefixes = /var/log/postfix
+maillog_file = /var/log/mail.log
+maillog_file_prefixes = /var/log/

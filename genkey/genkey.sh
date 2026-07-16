@@ -31,7 +31,8 @@ for record in "${DOMAIN_ARRAY[@]}"; do
     filename_txt="${domain//./_}_${selector}.txt"
 
     ## generating key 
-    opendkim-genkey -d $domain -b 2048 -a -r -s $selector -D $KEY_OUTPUT
+    # opendkim-genkey -d $domain -b 2048 -a -r -s $selector -D $KEY_OUTPUT
+    opendkim-genkey -d $domain -b 1024 -a -r -s $selector -D $KEY_OUTPUT
     mv "${KEY_OUTPUT}/${selector}.private" "${KEY_OUTPUT}/${filename_key}"
     chmod +r "${KEY_OUTPUT}/${filename_key}"
 

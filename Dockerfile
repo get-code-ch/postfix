@@ -1,7 +1,7 @@
 ##
 ## Building postfix containter 
 ##
-FROM debian:11-slim
+FROM debian:13-slim
 LABEL maintainer="Claude Debieux <claude@get-code.ch>"
 
 ## 

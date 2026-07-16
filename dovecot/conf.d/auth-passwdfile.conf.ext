@@ -3,7 +3,14 @@
 # passwd-like file with specified location.
 # <doc/wiki/AuthDatabase.PasswdFile.txt>
 
-passdb {
-  driver = passwd-file
-  args = scheme=CRYPT username_format=%u /etc/dovecot/users
+passdb passwd-file {
+  passwd_file_path = /etc/dovecot/users
+}
+
+userdb static {
+  fields {
+    uid = 2222
+    gid = 2222
+    home = /var/mail/%d/%u
+  }
 }

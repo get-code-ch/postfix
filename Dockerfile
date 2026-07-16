@@ -37,6 +37,9 @@ RUN postmap lmdb:/etc/postfix/vmail_mailbox
 RUN postmap lmdb:/etc/postfix/vmail_alias
 RUN postalias lmdb:/etc/postfix/aliases
 
+# Create postfix queue directories with correct ownership before runtime
+RUN postfix -c /etc/postfix check || true
+
 # dovecot conf
 COPY ./dovecot/ /etc/dovecot/
 RUN chmod +r /etc/dovecot/users
